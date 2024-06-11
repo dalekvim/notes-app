@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { Edit } from "./page/Edit";
+import { List } from "./page/List";
+import { New } from "./page/New";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export type Page = "list" | "view" | "edit" | "new";
+
+export interface Note {
+  id: number;
+  text: string;
 }
+
+const App: React.FC = () => {
+  const [page, setPage] = useState<Page>("list");
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [cur, setCur] = useState(0);
+
+  const getNote = (id: number) => {
+    return notes[id];
+  };
+
+  const setNote = (id: number, text: string) => {
+    const upNote: Note = { id: id, text: text };
+    notes[id] = upNote;
+    setNotes(notes);
+  };
+
+  return (
+    <>
+      {page === "list" ? (
+        <List setPage={setPage} notes={notes} setCur={setCur} />
+      ) : page === "edit" ? (
+        <Edit setPage={setPage} cur={cur} getNote={getNote} setNote={setNote} />
+      ) : page === "new" ? (
+        <New setPage={setPage} setNotes={setNotes} />
+      ) : (
+        <>Something's gone wrong.</>
+      )}
+    </>
+  );
+};
 
 export default App;
