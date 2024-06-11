@@ -1,7 +1,17 @@
 {
   "name": "notes-app",
   "version": "0.1.0",
+  "homepage": "https://dalekvim.github.io/notes-app",
+  "license": "MIT",
   "private": true,
+  "author": {
+    "name": "Vimal Vinod",
+    "email": "dalekvim@gmail.com"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://www.buymeacoffee.com/dalekvim"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -29,9 +39,12 @@
     "workbox-streams": "^6.6.0"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
+    "gh-pages": "^6.1.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test",
