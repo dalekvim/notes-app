@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/notes-app/static/js/main.52647347.js",
+    "static/js/453.cf291aa0.chunk.js": "/notes-app/static/js/453.cf291aa0.chunk.js",
+    "service-worker.js": "/notes-app/service-worker.js",
+    "index.html": "/notes-app/index.html",
+    "main.52647347.js.map": "/notes-app/static/js/main.52647347.js.map",
+    "453.cf291aa0.chunk.js.map": "/notes-app/static/js/453.cf291aa0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.52647347.js"
+  ]
+}
