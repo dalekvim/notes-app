@@ -49,6 +49,7 @@ const App: React.FC = () => {
     const newNotes = [...notes, blankNote];
     saveNotes(newNotes);
     setNoteId(newNotes.length - 1);
+    setText("");
   };
 
   const updateText = (id: number) => {

@@ -31,7 +31,7 @@ export const MyFAB: React.FC<Props> = ({
   setNote,
 }) => (
   <Fab
-    sx={{ position: "absolute", right: 20, bottom: 20 }}
+    sx={{ position: "absolute", right: 25, bottom: 25 }}
     aria-label={fabs[fabId].label}
     color={fabs[fabId].color}
     onClick={() => {
