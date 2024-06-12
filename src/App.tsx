@@ -1,9 +1,10 @@
+import { Container, CssBaseline, useMediaQuery } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import React, { useState } from "react";
-import { Edit } from "./page/Edit";
-import { List } from "./page/List";
-import { New } from "./page/New";
-
-export type Page = "list" | "view" | "edit" | "new";
+import { EditNote } from "./Components/EditNote";
+import { MyFAB, fabType } from "./Components/MyFAB";
+import { NotesList } from "./Components/NotesList";
 
 export interface Note {
   id: number;
@@ -11,32 +12,73 @@ export interface Note {
 }
 
 const App: React.FC = () => {
-  const [page, setPage] = useState<Page>("list");
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [cur, setCur] = useState(0);
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? "dark" : "light",
+        },
+      }),
+    [prefersDarkMode]
+  );
+
+  const [fabId, setFabId] = useState<fabType>("add");
+  const [noteId, setNoteId] = useState<number>(0);
+
+  const [notes, saveNotes] = useLocalStorage<Note[]>("notes", [
+    { id: 0, text: "Click here to edit." },
+  ]);
 
   const getNote = (id: number) => {
     return notes[id];
   };
 
-  const setNote = (id: number, text: string) => {
-    const upNote: Note = { id: id, text: text };
-    notes[id] = upNote;
-    setNotes(notes);
+  const [text, setText] = useState(getNote(noteId).text);
+
+  const setNote = () => {
+    const editedNote = { id: noteId, text: text };
+    notes[noteId] = editedNote;
+    saveNotes(notes);
+    setText("");
+  };
+
+  const addNote = () => {
+    const blankNote = { id: notes.length, text: "" };
+    const newNotes = [...notes, blankNote];
+    saveNotes(newNotes);
+    setNoteId(newNotes.length - 1);
+  };
+
+  const updateText = (id: number) => {
+    setText(getNote(id).text);
   };
 
   return (
-    <>
-      {page === "list" ? (
-        <List setPage={setPage} notes={notes} setCur={setCur} />
-      ) : page === "edit" ? (
-        <Edit setPage={setPage} cur={cur} getNote={getNote} setNote={setNote} />
-      ) : page === "new" ? (
-        <New setPage={setPage} setNotes={setNotes} />
-      ) : (
-        <>Something's gone wrong.</>
-      )}
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container sx={{ height: "100%" }}>
+        {fabId === "add" ? (
+          <NotesList
+            notes={notes}
+            setFabId={setFabId}
+            setNoteId={setNoteId}
+            updateText={updateText}
+          />
+        ) : fabId === "edit" ? (
+          <EditNote text={text} setText={setText} />
+        ) : (
+          <></>
+        )}
+        <MyFAB
+          fabId={fabId}
+          setFabId={setFabId}
+          addNote={addNote}
+          setNote={setNote}
+        />
+      </Container>
+    </ThemeProvider>
   );
 };
 
